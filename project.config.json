@@ -1,0 +1,17 @@
+{
+  "packageName": "@xyb-openharness-dsh-plugins/cerebral-infarction-workbench",
+  "title": "脑梗死工作台（暂定名，待用户追认）",
+  "repository": "https://github.com/xyb-openharness-dsh-plugins/cerebral-infarction-workbench",
+  "description": "面向脑梗死患者及照护者的急症识别、就医准备与资料整理工作台；不替代急救或临床判断。",
+  "slug": "cerebral-infarction-workbench",
+  "layoutMode": "business-first",
+  "businessWidth": 0.65,
+  "targetUsers": "脑梗死患者、疑似脑卒中者的陪同家属与照护者；不假设当前用户已确诊或症状稳定。",
+  "scenario": "疑似急性脑卒中时尽快识别危险信号、联系当地急救服务并准备就医信息；出院后整理本人的脑梗死资料用于复诊。",
+  "coreFlow": [
+    "疑似急症时呈现FAST识别与立即联系当地急救服务的入口，记录症状发现时间（如已知）",
+    "生成可带去急诊的简要就医准备清单，不延误呼救或院前处置",
+    "稳定后由本人或照护者整理脑梗死诊疗资料、来源和随访问题"
+  ],
+  "completion": "用户可看到急症下一步提示与就医准备清单，并可在稳定后整理可追溯的个人资料；页面不提供疗效承诺或用药指令。"
+}
