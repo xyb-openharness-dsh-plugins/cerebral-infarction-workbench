@@ -27,7 +27,7 @@
 
 ### M0（2026-11-18）
 
-- **交付物**：starter 1.10.0-rc.56 初始化骨架（共 252 个初始化计划文件），README、AGENTS、package/DSH 注册骨架、docs 文档套装（BRIEF/SPEC/TASKS/ACCEPTANCE/PARITY/SCHEMA/API/UI/SETTINGS/HVT/PROTOTYPE-REVIEW 等）、PROGRESS.md；提交号在本行最终证据提交后由 git log 核验。
+- **交付物**：starter 1.10.0-rc.56 初始化骨架（共 252 个初始化计划文件），README、AGENTS、package/DSH 注册骨架、docs 文档套装（BRIEF/SPEC/TASKS/ACCEPTANCE/PARITY/SCHEMA/API/UI/SETTINGS/HVT/PROTOTYPE-REVIEW 等）、PROGRESS.md；M0 主提交 `92c1db3`（本证据补录提交会随后记录在 git log）。
 - **验证命令**：`dsh-wb-cli doctor`；`dsh-wb-cli init --config /tmp/cerebral-infarction-project.config.json --target /data/home/dev/cerebral-infarction-workbench-run --dry-run`；同命令去掉 `--dry-run`；`npm install`；`npm run check`。
 - **关键输出（原文）**：`"version": "1.10.0-rc.56"`；dry-run：`{"dryRun":true,"target":"/data/home/dev/cerebral-infarction-workbench-run","files":252,"layout":"business-first"}`；init：`{"generated":"/data/home/dev/cerebral-infarction-workbench-run","files":252,"layout":"business-first","stage":"designer-alignment",...}`；doctor：`"supported": true`，`"appDetected": null`；npm install：`added 59 packages, and audited 60 packages in 7s`，`found 0 vulnerabilities`；`npm run check` 退出码 1，关键失败原文：`✗ 资料目录闸门未通过：按钮必须真的能选目录并落盘` / `✗ ① 没有真实选择动作 ...` / `✗ ② 拒绝清单不完整 ...` / `✗ ③ 目录落点没接上 ...`。
 - **未验证/说明**：M0 是骨架里程碑，资料目录真实实现属于后续业务阶段；不把该脚手架默认缺失闸门记成通过，也不改检查器或哈希掩盖。Desktop 未检测到（`appDetected: null`），实机安装、重启、点击未验证。线上 DSH 规范已打开全文，地址 `https://dshdesktop.com/workbench/docs/development.md`，页面标注版本 2026-10-27（访问日期 2026-11-18）。
