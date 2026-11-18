@@ -9,7 +9,7 @@
 | M0 |  |  |  |  |
 | M1 |  |  |  |  |
 | M2 | `prototypes/v0.2/index.html`、`primer-data.js`、4张 `docs/evidence/m2-prototype-*.png`、`docs/PROTOTYPE-REVIEW.md`、`docs/SETTINGS-DESIGN.md`；M2 主提交 `95e7efc`；证据补录提交见 git log | `node scripts/check-primer-links.mjs`（退出码0）；`node scripts/check-primer-links.mjs --http`（退出码0）；本机 Chromium 154.0.8037.57 CDP 页面加载、交互探针与截图 | 静态：`✓ 链接断言：20 项结构 + 未联网，20 通过，0 失败`；联网：`✓ 链接断言：20 项结构 + 联网实测，23 通过，0 失败，1 待人工确认`；浏览器：`home complete|true|脑梗死工作台 · 交互原型 v0.1.0`；AI面板探针实测 main `x=216,width=298,right=514`，pane `x=522,width=243`，草稿状态 `检测到原生草稿；保留用户输入，不覆盖、不发送。`；HTML SHA-256 `26b237db5774b795d105832aef5ae8750899349bf1b176c60f8ddd7e75ded026` | AHA 官方页面脚本联网请求 HTTP 403，待人工确认（官方页面曾在浏览器打开）；电话、真实目录选择/落盘、真实 DSH Agent 会话与 newSession/subscribe、Desktop安装/重启/点击未验证；临床审核未完成；用户尚未签认原型哈希和模块范围，故 M3+暂停。 |
-| M3 | M2签认补录 `docs/PROTOTYPE-REVIEW.md`；冻结合同 `docs/SCHEMA.md`、`schema/0001_initial.sql`、`schema/freeze-contract.md`；检查脚本 `scripts/check-schema.mjs`；详情见M3记录与后续证据提交 | `node --disable-warning=ExperimentalWarning scripts/check-schema.mjs`；`sha256sum schema/0001_initial.sql` | `✓ schema v1: 11 tables; integrity_check=ok; foreign_key_check=0; forbidden acute columns=0; unknown-time constraint=pass; intentional invalid-time insert=rejected`；SQL SHA-256 `2c8100c22d702d9e1eefb2f5796bb2dbac2f6026b1a7dcf254a1ed9347a32361` | 只在 Node v22.23.3 内存SQLite验证；SQLite 在此Node版本仍 experimental；Desktop Node/API与真实迁移/权限未验证；临床专业审核未完成。 |
+| M3 | M2签认补录 `docs/PROTOTYPE-REVIEW.md`；冻结合同 `docs/SCHEMA.md`、`schema/0001_initial.sql`、`schema/freeze-contract.md`；检查脚本 `scripts/check-schema.mjs`；M3首提交 `980665b`；详情见M3记录与本证据补录提交 | `node --disable-warning=ExperimentalWarning scripts/check-schema.mjs`；`sha256sum schema/0001_initial.sql` | `✓ schema v1: 11 tables; integrity_check=ok; foreign_key_check=0; forbidden acute columns=0; unknown-time constraint=pass; intentional invalid-time insert=rejected`；SQL SHA-256 `2c8100c22d702d9e1eefb2f5796bb2dbac2f6026b1a7dcf254a1ed9347a32361` | 只在 Node v22.23.3 内存SQLite验证；SQLite 在此Node版本仍 experimental；Desktop Node/API与真实迁移/权限未验证；临床专业审核未完成。 |
 | M4 |  |  |  |  |
 | M5 |  |  |  |  |
 | M6 |  |  |  |  |
@@ -53,6 +53,6 @@
 
 ### M3（2026-11-19）
 
-- **交付物**：M2签认补录；冻结 schema v1（11张表）`schema/0001_initial.sql`；结构与演进合同 `docs/SCHEMA.md`；SQL哈希合同 `schema/freeze-contract.md`；可复跑自检 `scripts/check-schema.mjs`；更新API/验收/交接待办。M3首提交含用户签认，提交号以本条证据补录提交的git log为准。
-- **验证**：`node --disable-warning=ExperimentalWarning scripts/check-schema.mjs`，退出码待本条证据补录前显式复核。已观察的关键输出：`✓ schema v1: 11 tables; integrity_check=ok; foreign_key_check=0; forbidden acute columns=0; unknown-time constraint=pass; intentional invalid-time insert=rejected`；迁移SHA-256 `2c8100c22d702d9e1eefb2f5796bb2dbac2f6026b1a7dcf254a1ed9347a32361`。
+- **交付物**：M2签认补录；冻结 schema v1（11张表）`schema/0001_initial.sql`；结构与演进合同 `docs/SCHEMA.md`；SQL哈希合同 `schema/freeze-contract.md`；可复跑自检 `scripts/check-schema.mjs`；更新API/验收/交接待办。M3首提交 `980665b` 含用户签认，schema冻结与实现合同。
+- **验证**：`node --disable-warning=ExperimentalWarning scripts/check-schema.mjs`，退出码 0。关键输出：`✓ schema v1: 11 tables; integrity_check=ok; foreign_key_check=0; forbidden acute columns=0; unknown-time constraint=pass; intentional invalid-time insert=rejected`；迁移SHA-256 `2c8100c22d702d9e1eefb2f5796bb2dbac2f6026b1a7dcf254a1ed9347a32361`。
 - **未验证**：只在Node v22.23.3本机内存库验证；`node:sqlite`官方22.x文档标记为experimental，目标DSH Desktop Node版本与运行环境尚未核验；实际数据目录与真实迁移/回滚、临床专业审核未验证。公开临床/试验数据为M4任务，尚未检索。

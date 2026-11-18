@@ -38,7 +38,7 @@
 ## M2签认补录与M3断点更新（2026-11-19）
 
 - 用户于2026-11-19 07:44 CST确认M2原型SHA-256 `26b237db5774b795d105832aef5ae8750899349bf1b176c60f8ddd7e75ded026`与一期范围EMR-01/02、EMR-03、REC-01、SET-01、PRIMER-01、AGENT-01；G1仍标“自动签认 · 待晨审追认”。签认追加在`docs/PROTOTYPE-REVIEW.md`，随M3首提交推送。
-- M3已完成：v1 schema及冻结SQL已验证（证据见`docs/MILESTONE-EVIDENCE.md §M3`）；M0–M2未重做。
+- M3已完成并推送：首提交 `980665b` 含签认记录和v1 schema；schema及冻结SQL已验证（证据见`docs/MILESTONE-EVIDENCE.md §M3`）；M0–M2未重做。
 - 未验证：Desktop Node与`node:sqlite`支持、真实资料目录、真实迁移恢复、Desktop安装重启走查及临床专业审核。M0目录门禁失败须在M5复测。
 - 下一步：M4仅从公开来源检索临床/注册研究元数据，记录查询、访问日期、条数及通道失败；仓内只使用公开/合成数据。
 - 阻塞：M3无人工闸口；Desktop实机环境未验证不阻断其余本地工作。
