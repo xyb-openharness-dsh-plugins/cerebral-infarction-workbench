@@ -8,7 +8,7 @@
 |---|---|---|---|---|
 | M0 |  |  |  |  |
 | M1 |  |  |  |  |
-| M2 |  |  |  |  |
+| M2 | `prototypes/v0.2/index.html`、`primer-data.js`、4张 `docs/evidence/m2-prototype-*.png`、`docs/PROTOTYPE-REVIEW.md`、`docs/SETTINGS-DESIGN.md`；提交号见本条后续证据补录提交 | `node scripts/check-primer-links.mjs`（退出码0）；`node scripts/check-primer-links.mjs --http`（退出码0）；本机 Chromium 154.0.8037.57 CDP 页面加载、交互探针与截图 | 静态：`✓ 链接断言：20 项结构 + 未联网，20 通过，0 失败`；联网：`✓ 链接断言：20 项结构 + 联网实测，23 通过，0 失败，1 待人工确认`；浏览器：`home complete|true|脑梗死工作台 · 交互原型 v0.1.0`；AI面板探针实测 main `x=216,width=298,right=514`，pane `x=522,width=243`，草稿状态 `检测到原生草稿；保留用户输入，不覆盖、不发送。`；HTML SHA-256 `26b237db5774b795d105832aef5ae8750899349bf1b176c60f8ddd7e75ded026` | AHA 官方页面脚本联网请求 HTTP 403，待人工确认（官方页面曾在浏览器打开）；电话、真实目录选择/落盘、真实 DSH Agent 会话与 newSession/subscribe、Desktop安装/重启/点击未验证；临床审核未完成；用户尚未签认原型哈希和模块范围，故 M3+暂停。 |
 | M3 |  |  |  |  |
 | M4 |  |  |  |  |
 | M5 |  |  |  |  |
@@ -38,3 +38,10 @@
 - **验证/研究命令**：本次实际打开国家卫健委《脑血管病防治指南（2024年版）》官方PDF（浏览器行60–100）、AHA/ASA 2026指南要点（行35–48）、ASA症状页（行15–43、111–143）、Wang et al 2021患者访谈全文（行108–143及251–310）；`python3 skills/hvt-requirement-review/scripts/hvt_scan.py --project . --terms /tmp/cerebral-infarction-hvt-terms.json --out /tmp/cerebral-infarction-hvt-scan.md --json /tmp/cerebral-infarction-hvt-scan.json`。
 - **关键输出**：HVT扫描输出 `扫描文档：83 份`；`S2 ... S=1 M=1 F=1 I=1 A=1 C=5`；`S1 ... S=1 M=1 F=1 I=1 A=1 C=5`；`有命中但 C≤2 ... 0 个`；`五层齐全 ... 2 个`。扫描为启发式初值，实际逐文档复核定位在 HVT-REVIEW §2，不能将术语命中本身等同覆盖。浏览器来源事实：NHC指南发布日期 `2024年12月10日`；其原文列BEFAST与立即拨120；访谈纳入 `24` 名延迟就医患者。
 - **未验证/局限**：无真实患者/照护者访谈；无神经科/急救临床审核；AHA完整指南原件、NHC地方服务规则、卒中中心数据、登记试验包未取得；AI独立review未完成；M2原型和用户确认尚未做。设计自动G1签认依据用户任务明确授权，标注待晨审追认。
+
+
+### M2（2026-11-18）
+
+- **交付物**：急症首页、可选交接摘要、合成资料、设置边界、疾病概要与宿主 Agent 模拟，文件 `prototypes/v0.2/index.html`、`prototypes/v0.2/primer-data.js`；设置与交互说明见 `docs/SETTINGS-DESIGN.md`、`docs/PROTOTYPE-REVIEW.md`；截图 4 张见 `docs/evidence/`。原型 HTML SHA-256：`26b237db5774b795d105832aef5ae8750899349bf1b176c60f8ddd7e75ded026`。页面与 package 版本仍为 `0.1.0`，最终目标 `0.2.0` 留至 M9。
+- **验证命令/实测**：`node scripts/check-primer-links.mjs` 退出码 0，原文 `✓ 链接断言：20 项结构 + 未联网，20 通过，0 失败`。`node scripts/check-primer-links.mjs --http` 退出码 0，原文 `✓ 链接断言：20 项结构 + 联网实测，23 通过，0 失败，1 待人工确认`，并有 `WARN L11 guidance.sources[3] HTTP 403 — 反爬/服务端拦脚本，浏览器或可开，需人工确认`。Chromium 154.0.8037.57 实际加载本地 file URL，捕获首页、交接、primer、Agent状态四张截图；探针输出记录于 `docs/PROTOTYPE-REVIEW.md`。
+- **未验证/闸口**：仅为本地浏览器交互原型；不拨电话、不访问真实文件系统、不保存患者资料、不连接真实Agent。DSH Desktop安装/退出重开/点击未验证。AHA HTTP脚本请求待人工确认，临床专业审核未完成。用户尚未对确切原型哈希和模块范围签认；依据 starter 前置要求，M3 schema 冻结与后续生产开发暂停等待用户决定。G1 自动签认仍标注待晨审追认。
