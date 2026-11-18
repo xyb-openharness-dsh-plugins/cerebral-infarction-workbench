@@ -48,3 +48,7 @@
 | 宿主会话变化 | 无患者事实与会话 ID 绑定 | DSH host adapter | 会话 owner 属宿主；不进 patient schema |
 
 并发写入、真实目录权限、断电恢复、宿主 Node 版本及桌面迁移尚未验证；实现与实际验收见 M5/M6 证据。
+
+## M4 schema addendum: public registry first-post date
+
+M4 public ClinicalTrials.gov query filters on initial first-post date; this is distinct from later record updates. The frozen v1 SQL stays unchanged. Migration `schema/0002_public-study-first-posted-date.sql` adds nullable `public_studies.first_posted_date` and sets `user_version=2`. Existing v1 databases retain NULL (unknown); the migration runner must execute only from v1, in a transaction, and take a verified backup first. The public snapshot remains research metadata and is not exposed as personalized trial matching.

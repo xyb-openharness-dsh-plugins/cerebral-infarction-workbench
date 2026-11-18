@@ -34,3 +34,9 @@ U01：[hhx465453939/agent-taste-seed-system](https://github.com/hhx465453939/age
 | NHC 2024-09-22 新闻发布会记录 <https://www.nhc.gov.cn/xcs/c100122/202409/091e0e2947bb410d95fe2d45933afa7b.shtml> | 官方新闻稿页面 | 后续待核语境 | 浏览器访问返回 HTTP 412，内容未取得，未引用具体说法 |
 
 非临床决策数据：地方120规则、各地区卒中中心名录/实时能力、临床试验登记数据包尚未取得。
+
+
+## M4公开试验登记数据
+
+- ClinicalTrials.gov API v2（公开登记元数据）：<https://clinicaltrials.gov/api/v2/studies>；API说明页<https://clinicaltrials.gov/data-api/api>。访问2026-11-19。窗口、完整查询和分页实测见 `docs/CLINICAL-DATA.md` 与 `research/clinical-trials/manifest.json`。
+- 本项目快照保留元数据和规范化JSON哈希，不含个体数据、招募联系人、资格标准或结果全文。未取得ChiCTR可复现全量数据，不把本快照当中国登记全量或治疗证据。

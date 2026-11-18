@@ -1,0 +1,11 @@
+{
+  "source": "ClinicalTrials.gov API v2",
+  "snapshot": {
+    "records": 331,
+    "date": "2026-11-19",
+    "query": "ischemic stroke; first posted 2026-02-19 through 2026-11-19",
+    "complete": true
+  },
+  "purpose": "M4 public research evidence and aggregate registry context only; no app search or patient matching",
+  "notIncluded": ["participant-level data", "contact details", "eligibility text", "clinical outcome data"]
+}

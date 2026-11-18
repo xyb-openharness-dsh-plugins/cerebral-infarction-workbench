@@ -1,0 +1,34 @@
+{
+  "fixtureOnly": true,
+  "notice": "全部为合成演示资料，不是真实患者，不可用于临床决策。",
+  "subjects": [
+    {
+      "id": "demo-limited-001",
+      "displayLabel": "合成示例 A · 资料较少",
+      "subjectRole": "self",
+      "isDemo": true,
+      "documents": [
+        {"id":"demo-doc-a1","kind":"discharge_summary","displayLabel":"出院记录（合成）","documentDate":"2026-10-01","sourceLabel":"合成演示资料","reviewState":"unreviewed","relativePath":"demo/a/discharge-summary.txt"}
+      ],
+      "questions": [
+        {"id":"demo-q-a1","text":"这份出院记录中有哪些术语需要我请医生解释？","state":"draft","isPrivate":false}
+      ]
+    },
+    {
+      "id": "demo-followup-002",
+      "displayLabel": "合成示例 B · 随访资料较多",
+      "subjectRole": "care_recipient",
+      "isDemo": true,
+      "documents": [
+        {"id":"demo-doc-b1","kind":"visit_note","displayLabel":"门诊记录（合成）","documentDate":"2026-08-03","sourceLabel":"合成演示资料","reviewState":"user_confirmed","relativePath":"demo/b/visit-note-2026-08.txt"},
+        {"id":"demo-doc-b2","kind":"imaging_report","displayLabel":"影像报告（合成）","documentDate":"2026-08-04","sourceLabel":"合成演示资料","reviewState":"unreviewed","relativePath":"demo/b/imaging-2026-08.txt"},
+        {"id":"demo-doc-b3","kind":"laboratory_report","displayLabel":"化验报告（合成）","documentDate":"2026-09-12","sourceLabel":"合成演示资料","reviewState":"transcribed","relativePath":"demo/b/lab-2026-09.txt"},
+        {"id":"demo-doc-b4","kind":"visit_note","displayLabel":"复诊记录（合成）","documentDate":"2026-10-15","sourceLabel":"合成演示资料","reviewState":"unreviewed","relativePath":"demo/b/visit-note-2026-10.txt"}
+      ],
+      "questions": [
+        {"id":"demo-q-b1","text":"两份影像报告的描述是否提到不同部位？请医生解释原文。","state":"open","isPrivate":false},
+        {"id":"demo-q-b2","text":"复诊时我需要补充哪些资料来源？","state":"draft","isPrivate":true}
+      ]
+    }
+  ]
+}
