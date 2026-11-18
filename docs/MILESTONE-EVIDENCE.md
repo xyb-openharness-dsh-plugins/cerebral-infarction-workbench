@@ -9,7 +9,7 @@
 | M0 |  |  |  |  |
 | M1 |  |  |  |  |
 | M2 | `prototypes/v0.2/index.html`、`primer-data.js`、4张 `docs/evidence/m2-prototype-*.png`、`docs/PROTOTYPE-REVIEW.md`、`docs/SETTINGS-DESIGN.md`；M2 主提交 `95e7efc`；证据补录提交见 git log | `node scripts/check-primer-links.mjs`（退出码0）；`node scripts/check-primer-links.mjs --http`（退出码0）；本机 Chromium 154.0.8037.57 CDP 页面加载、交互探针与截图 | 静态：`✓ 链接断言：20 项结构 + 未联网，20 通过，0 失败`；联网：`✓ 链接断言：20 项结构 + 联网实测，23 通过，0 失败，1 待人工确认`；浏览器：`home complete|true|脑梗死工作台 · 交互原型 v0.1.0`；AI面板探针实测 main `x=216,width=298,right=514`，pane `x=522,width=243`，草稿状态 `检测到原生草稿；保留用户输入，不覆盖、不发送。`；HTML SHA-256 `26b237db5774b795d105832aef5ae8750899349bf1b176c60f8ddd7e75ded026` | AHA 官方页面脚本联网请求 HTTP 403，待人工确认（官方页面曾在浏览器打开）；电话、真实目录选择/落盘、真实 DSH Agent 会话与 newSession/subscribe、Desktop安装/重启/点击未验证；临床审核未完成；用户尚未签认原型哈希和模块范围，故 M3+暂停。 |
-| M3 |  |  |  |  |
+| M3 | M2签认补录 `docs/PROTOTYPE-REVIEW.md`；冻结合同 `docs/SCHEMA.md`、`schema/0001_initial.sql`、`schema/freeze-contract.md`；检查脚本 `scripts/check-schema.mjs`；详情见M3记录与后续证据提交 | `node --disable-warning=ExperimentalWarning scripts/check-schema.mjs`；`sha256sum schema/0001_initial.sql` | `✓ schema v1: 11 tables; integrity_check=ok; foreign_key_check=0; forbidden acute columns=0; unknown-time constraint=pass; intentional invalid-time insert=rejected`；SQL SHA-256 `2c8100c22d702d9e1eefb2f5796bb2dbac2f6026b1a7dcf254a1ed9347a32361` | 只在 Node v22.23.3 内存SQLite验证；SQLite 在此Node版本仍 experimental；Desktop Node/API与真实迁移/权限未验证；临床专业审核未完成。 |
 | M4 |  |  |  |  |
 | M5 |  |  |  |  |
 | M6 |  |  |  |  |
@@ -45,3 +45,14 @@
 - **交付物**：急症首页、可选交接摘要、合成资料、设置边界、疾病概要与宿主 Agent 模拟，文件 `prototypes/v0.2/index.html`、`prototypes/v0.2/primer-data.js`；设置与交互说明见 `docs/SETTINGS-DESIGN.md`、`docs/PROTOTYPE-REVIEW.md`；M2主提交 `95e7efc`；截图 4 张见 `docs/evidence/`。原型 HTML SHA-256：`26b237db5774b795d105832aef5ae8750899349bf1b176c60f8ddd7e75ded026`。页面与 package 版本仍为 `0.1.0`，最终目标 `0.2.0` 留至 M9。
 - **验证命令/实测**：`node scripts/check-primer-links.mjs` 退出码 0，原文 `✓ 链接断言：20 项结构 + 未联网，20 通过，0 失败`。`node scripts/check-primer-links.mjs --http` 退出码 0，原文 `✓ 链接断言：20 项结构 + 联网实测，23 通过，0 失败，1 待人工确认`，并有 `WARN L11 guidance.sources[3] HTTP 403 — 反爬/服务端拦脚本，浏览器或可开，需人工确认`。Chromium 154.0.8037.57 实际加载本地 file URL，捕获首页、交接、primer、Agent状态四张截图；探针输出记录于 `docs/PROTOTYPE-REVIEW.md`。
 - **未验证/闸口**：仅为本地浏览器交互原型；不拨电话、不访问真实文件系统、不保存患者资料、不连接真实Agent。DSH Desktop安装/退出重开/点击未验证。AHA HTTP脚本请求待人工确认，临床专业审核未完成。用户尚未对确切原型哈希和模块范围签认；依据 starter 前置要求，M3 schema 冻结与后续生产开发暂停等待用户决定。G1 自动签认仍标注待晨审追认。
+
+
+### M2签认补录（2026-11-19）
+
+用户于 `2026-11-19 07:44 CST` 明确确认原型 SHA-256 `26b237db5774b795d105832aef5ae8750899349bf1b176c60f8ddd7e75ded026` 与一期模块 EMR-01/02、EMR-03、REC-01、SET-01、PRIMER-01、AGENT-01；G1 仍为“自动签认 · 待晨审追认”。该签认在M3首个提交一并提交，详见 `docs/PROTOTYPE-REVIEW.md`。此条是对M2历史未签认状态的追加补录，不覆盖M2证据条目。
+
+### M3（2026-11-19）
+
+- **交付物**：M2签认补录；冻结 schema v1（11张表）`schema/0001_initial.sql`；结构与演进合同 `docs/SCHEMA.md`；SQL哈希合同 `schema/freeze-contract.md`；可复跑自检 `scripts/check-schema.mjs`；更新API/验收/交接待办。M3首提交含用户签认，提交号以本条证据补录提交的git log为准。
+- **验证**：`node --disable-warning=ExperimentalWarning scripts/check-schema.mjs`，退出码待本条证据补录前显式复核。已观察的关键输出：`✓ schema v1: 11 tables; integrity_check=ok; foreign_key_check=0; forbidden acute columns=0; unknown-time constraint=pass; intentional invalid-time insert=rejected`；迁移SHA-256 `2c8100c22d702d9e1eefb2f5796bb2dbac2f6026b1a7dcf254a1ed9347a32361`。
+- **未验证**：只在Node v22.23.3本机内存库验证；`node:sqlite`官方22.x文档标记为experimental，目标DSH Desktop Node版本与运行环境尚未核验；实际数据目录与真实迁移/回滚、临床专业审核未验证。公开临床/试验数据为M4任务，尚未检索。

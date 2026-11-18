@@ -1,35 +1,50 @@
-# 数据模型候选（M1/M3待冻结）
+# 数据模型 v1（M3 已冻结）
 
-状态：M1候选设计，不是生产schema；M3须在原型签认后冻结。只用合成数据，不入真实患者数据。
+冻结日期：2026-11-19。确认依据：M2 原型确认记录，SHA-256 `26b237db5774b795d105832aef5ae8750899349bf1b176c60f8ddd7e75ded026`。数据库定义唯一来源：`schema/0001_initial.sql`；其 SHA-256 与冻结说明见 `schema/freeze-contract.md`。冻结迁移不得编辑；变更只能新增 `000N_*.sql` 并递增 `PRAGMA user_version`。
 
-## 原则
+## 存储选型与约束
 
-区分主体、来源/证据、用户录入事实、急症临时工作流、资料目录与读模型。时间值必须能表达来源、未知、估计、时区；不能把“最后正常”和“症状发现”混为一列。症状自述不代表诊断；急症临时卡可在本地不持久保存。
+选 SQLite：急症事件、时间点、观察、来源与患者资料之间需要外键、唯一约束、原子写与一致读；公开登记快照要能分离、按注册号去重。当前 Node v22.23.3 的 `node:sqlite` 可在本机执行，官方 Node v22 文档将其标为 experimental（2026-11-19 实际查阅）；桌面宿主 Node 版本尚未核实。M5 必须做运行时能力探测，缺少 `node:sqlite` 时明确服务不可用，不得退化成未约束 JSON。
 
-## 候选实体
+数据库及文件仅写入用户主动选择并确认的资料目录；不得默默使用 home、仓库或临时目录。原件只保存为该目录内文件，数据库存相对路径、可选哈希和来源元信息；仓库只放合成夹具和公开研究材料，禁止真实患者资料。
 
-- `person_profile`：本人标识与可选显示名；本地稳定随机ID；不以姓名/身份证为主键。
-- `care_relationship`：陪护者与本人关系、是否被授权访问长期档案；与临时急救代填分开。
-- `acute_event`：疑似事件、首次异常观察、最后正常时间、记录主体、状态及来源标记；未知/估计/精确分开。
-- `symptom_observation`：症状类别、发生/观察时间、观察者、原文；不派生诊断或排除结论。
-- `handoff_snapshot`：由特定事件和确认过的字段生成的可导出临时快照；版本化生成时间，不回写原始事实。
-- `clinical_document`：资料索引、原文件路径/校验摘要、来源机构/上传者、日期、文档类型、验证状态；原件不入仓。
-- `care_question`：患者/家属自拟问题、来源事件/资料引用、状态与更正历史。
+所有 ID 为调用方生成的稳定 UUID 字符串；时间存 ISO 8601 文本，保留精度、时区和未知。任何人自述、照护者转述、文档转录与临床确认必须区分；未知是显式状态，不能改写为阴性。表中没有疾病诊断、风险、治疗资格、用药或预后派生列。
 
-## 字段与约束候选
+## 冻结实体
 
-所有患者/照护者录入的临床内容带 `assertion_status`（self_reported / caregiver_reported / copied_from_document / clinician_confirmed / unknown）；默认不得提升到 clinician_confirmed。时间包含 `value`, `precision`, `timezone`, `source_id`; 缺失必须保留 unknown，不能填0。实体用 stable ID + revision；编辑/删除写审计事件或可追溯修订，不覆盖来源原文。医学抽取值另存候选，不自动晋升为事实。
-
-## 演进矩阵
-
-| 变化 | 稳定事实/关系 | 预计变化层 | 兼容策略 |
+| 表 | 稳定键 | 关系与用途 | 主要约束/索引 |
 |---|---|---|---|
-| 首页入口/导航改变 | acute_event、source不变 | UI read model | 迁移无关 |
-| 增加症状字段 | observation类型/定义版本 | 定义目录/API版本 | 旧记录缺值解释为unknown，不回填阴性 |
-| 急症流程新增跳过/重开 | 工作流实例状态，不改观察事实 | workflow definition/version | 流程版本升级，保留旧快照 |
-| 来源文档更正 | 原件与新revision并存 | evidence/revision | 使摘要和缓存失效并重建 |
-| 患者切换/照护授权撤销 | person/relationship权限 | projection/cache | 清除旧主体投影，保留患者原始资料 |
+| `subjects` | `id` | 本人/照护对象；`is_demo` 区分合成档案 | 角色 CHECK；标签限长 |
+| `source_records` | `id` | 用户自述、照护者转述、文件、合成种子或公开参考来源 | 来源类别枚举；公开来源保留 URL/访问日 |
+| `subject_relationships` | `id` | 代填者与访问范围、确认/撤销状态 | subject 外键；撤销需曾确认 |
+| `acute_events` | `id` | 疑似急症的记录流程状态，不是确诊病例 | subject/source 外键；仅 open/handed_off/closed |
+| `event_timepoints` | `id` | 分开保存最后正常与首次观察；未知与近似时间有明确精度 | event/source 外键；未知值必须 NULL |
+| `symptom_observations` | `id` | FAST/BEFAST相关观察描述，不推断病因 | present/not_observed/unknown；来源角色；隐私标记 |
+| `clinical_documents` | `id` | 用户目录内原件索引、来源、核对状态与修订链 | subject/source 外键；相对路径；sha256 可空；in_use |
+| `care_questions` | `id` | 患者自拟复诊问题及状态、来源和修订 | subject/source 外键；不保存 AI 结论 |
+| `public_studies` | `registry_id` | 公开注册平台研究元数据快照；不含参与者个人数据，不做个体匹配 | source 外键；快照日；原始记录哈希；状态索引 |
+| `study_source_statuses` | `id` | 每个查询×来源的成功、空结果、失败、未查询状态 | 查询和来源唯一；失败状态不得变成零条 |
+| `workbench_settings` | `setting_key` | 非临床设置状态 | 白名单键；限长 |
 
-迁移、索引、备份、并发冲突与性能尚未实测；此版不冻结。
+研究数据不直接成为个体病历。试验资料仅可作公开登记描述；本版不估算患者资格、不用用户资料自动筛选或排序试验。
 
-急性事件的 `observed_signs` 可包含用户/目击者描述的 FAST/BEFAST 相关观察（面部、手臂、言语、平衡、视力等），但这些字段仅表示观察到/未观察到/未知，不能产生“脑梗死/脑出血”诊断或排除状态。
+## 写入、修订与事务
+
+- 对用户已确认记录的纠正用新行和 `supersedes_id` 建链；由业务用例把旧 revision 置为非当前读模型。重要变更保留创建时间、来源与隐私状态；不覆盖报告原文。
+- 跨表命令在 SQLite transaction 中写入；业务更新使用 expected revision，冲突返回 409 并重新读取，不静默覆盖。
+- 外键使用 `ON DELETE RESTRICT`，业务记录默认软失效；删除/撤销只有显式用例提供并按关系检查。合成种子受保护，不可混入真实档案。
+- SQL 迁移按序执行，在事务中备份旧库、应用迁移、检查外键与 `user_version`；失败还原备份，不清库。不回退已应用迁移文件。
+
+## UI 与流程演进走查
+
+| 变化 | 稳定事实 | 修改层 | 兼容/验收 |
+|---|---|---|---|
+| 首屏与导航拆合 | subject/event/source/document IDs | UI/版本化 read model | 不迁移，不复制页面事实 |
+| 新观察类别/时间精度 | 观察行、来源、明确 unknown | 新受限枚举迁移或定义目录 | 旧行保留；未知类别不解释为阴性 |
+| 急症步骤跳过、重新打开 | event 状态、观察与时间点 | workflow 定义版本/命令 | 快照保留；页面顺序变化不改事实 |
+| 文件更正或替换 | 原文件、来源和 revision 链 | 新 document revision、投影失效 | 原件留存，不改写来源 |
+| 新公开研究更新 | registry_id/source/snapshot_date | public_studies 快照 | 按登记号 upsert，新快照可追溯；不涉及患者库 |
+| 旧库升版失败 | `user_version` 及 SQLite 文件 | migration runner | 备份恢复；不清库 |
+| 宿主会话变化 | 无患者事实与会话 ID 绑定 | DSH host adapter | 会话 owner 属宿主；不进 patient schema |
+
+并发写入、真实目录权限、断电恢复、宿主 Node 版本及桌面迁移尚未验证；实现与实际验收见 M5/M6 证据。
