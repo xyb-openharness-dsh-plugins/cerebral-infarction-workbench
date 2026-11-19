@@ -33,3 +33,8 @@
 - 范围限制：AGENT-01 确认的是宿主集成模拟与会话合同目标，不表示本机 DSH Desktop、真实 `newSession`/`subscribe` 或其他宿主行为已验证；临床专业审核仍待完成。
 
 此补录确认上述确切哈希的模块可进入 M3 schema 冻结及后续对应实现，不等同临床审核或 Desktop 验收。
+
+
+### M9生产镜像说明（非新一轮用户签认）
+
+`prototypes/v0.3/`为M9从实际生产入口生成的审计兼容镜像，供starter家族一致性审计读取；不是新原型、不是新的用户确认对象，也不替换已确认的`prototypes/v0.2/`。M2签认合同仍仅绑定原HTML SHA-256 `26b237db5774b795d105832aef5ae8750899349bf1b176c60f8ddd7e75ded026`。M9镜像的文件哈希与生成说明见`docs/MILESTONE-EVIDENCE.md §M9`。

@@ -1,6 +1,6 @@
 # 脑梗死工作台 SPEC v0.1（M1候选）
 
-状态：需求草案；G1自动签认（待晨审追认），不是临床审核、原型签认或生产实现授权。
+状态：一期业务范围经用户于2026-11-19 07:44 CST按原型SHA-256 `26b237db5774b795d105832aef5ae8750899349bf1b176c60f8ddd7e75ded026`确认；G1为“自动签认 · 待晨审追认”，不代表临床专业审核。以下为M1形成的需求合同，M9实测偏差见`docs/TEST-CASES.md`。
 
 ## 范围与安全目标
 
@@ -26,7 +26,7 @@
 
 ## 数据/API与宿主
 
-候选实体见 `docs/SCHEMA.md`；目前无冻结schema。生产表/字段/迁移只有M3签认后实施。DSH布局倾向 business-first 主界面，保留宿主原生会话/AI面板。`newSession`、`subscribe`已有模板骨架，M5仍需按实际 Desktop 契约核对；本机 Desktop 尚未发现，无法验真。
+数据合同见`docs/SCHEMA.md`；schema v1在M3冻结，v2迁移在M4追加。服务API实现见`docs/API-CONTRACT.md`。DSH工作台使用customFrame内嵌业务HTML、保留宿主原生会话/AI面板；客户端含`newSession`、`subscribe`接线。本机未检测到DSH Desktop，宿主picker、真实会话和运行时仍未验证。
 
 ## 设置、测试与版本
 

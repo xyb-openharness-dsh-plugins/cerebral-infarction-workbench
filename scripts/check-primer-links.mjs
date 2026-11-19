@@ -147,6 +147,9 @@ function evaluate(primer, { legacy = false } = {}) {
       else if (v && typeof v === 'object') Object.values(v).forEach(push)
     }
     push(land.intro); push(land.points); push(land.groups)
+    // This workbench stores the signed four-section primer in `paragraphs`;
+    // include those rendered fields in the same fixed-exit assertion.
+    push(land.paragraphs); push(land.facts)
     const all = texts.join('\n')
     checked++
     if (!all.includes('不代表任何一项适合你') || !all.includes('需要问你的医生')) {

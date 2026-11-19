@@ -8,7 +8,7 @@
 </style>
 </head>
 <body>
-<div class="shell"><nav class="nav" aria-label="工作台导航"><strong>脑梗死工作台<br><small>暂定名 · 待用户追认</small></strong><button data-page="home" aria-current="page">急症首页</button><button data-page="handoff">就医交接</button><button data-page="records">资料整理</button><button data-page="profiles">档案管理</button><button data-page="settings">设置与隐私</button><button data-page="primer">疾病概要</button></nav><main class="content" id="app" tabindex="-1"><p role="status">载入本机工作区…</p></main></div>
+<div class="shell"><nav class="nav" aria-label="工作台导航"><strong>脑梗死工作台<br><small>v%VERSION% · 暂定名 · 待用户追认</small></strong><button data-page="home" aria-current="page">急症首页</button><button data-page="handoff">就医交接</button><button data-page="records">资料整理</button><button data-page="profiles">档案管理</button><button data-page="settings">设置与隐私</button><button data-page="primer" data-primer-open>疾病概要</button></nav><main class="content" id="app" tabindex="-1"><p role="status">载入本机工作区…</p></main></div>
 <script>
 const API='/api/cerebral-infarction-workbench';let model={subjects:[],documents:[],questions:[],dataDirectory:{configured:false}},page='home',handoffDraft=null,files=[];
 const app=document.getElementById('app'),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

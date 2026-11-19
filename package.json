@@ -1,6 +1,6 @@
 {
   "name": "@xyb-openharness-dsh-plugins/cerebral-infarction-workbench",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "面向脑梗死患者及照护者的急症识别、就医准备与资料整理工作台；不替代急救或临床判断。",
   "private": true,
   "type": "module",
