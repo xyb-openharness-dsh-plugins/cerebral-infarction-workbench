@@ -64,3 +64,10 @@
 - **公开查询实测**：ClinicalTrials.gov API v2 URL `https://clinicaltrials.gov/api/v2/studies`，参数：`query.cond=ischemic stroke`，`AREA[StudyFirstPostDate]RANGE[2026-02-19,MAX]`，排序`StudyFirstPostDate:desc`，100条/页。访问2026-11-19；原始程序输出`totalCount=331; returned=331; pages=4; pageSizes=100,100,100,31; uniqueIDs=331; dateWindow=2026-02-19..2026-11-18`。类型与状态分布见`docs/CLINICAL-DATA.md`。官方API页面说明其提供公开研究登记记录查询；不把登记状态当作疗效或招募推荐。
 - **校验**：`node --disable-warning=ExperimentalWarning scripts/check-public-research.mjs`退出码0，原文`✓ public research snapshot: 331 unique records; schema migration 1→2 adds first_posted_date; synthetic fixtures=2; no participant/eligibility fields; integrity_check=ok`；`node scripts/check-trial-chain.mjs .`退出码0，原文`✓ 裁剪理由带实测数字（N 条 / 快照口径）`/`✓ 临床试验闸门通过`；`node scripts/check-trial-snapshot.mjs . --if-present`退出码0但`SKIP no clinical snapshot found under /data/home/dev/cerebral-infarction-workbench`；`node scripts/check-schema-words.mjs .`退出码0，`pass=true, fails=[]`，冻结构哈希一致。脚本应验证331条唯一登记号、日期/URL/哈希格式、允许字段白名单、合成档案数量和迁移1→2；最终原文与退出码以补录提交为准。
 - **未验证/限制**：ChiCTR全量检索未完成；未逐条人工筛选ClinicalTrials.gov查询命中的临床相关性；未取得真实患者或参与者个人数据；快照不表示实时招募状态。临床审核和Desktop实机未验证。无个体化试验匹配功能。
+
+### M5 服务层与面板契约（2026-11-19）
+
+- **交付物**：`dsh/index.js`、`dsh/workbench.js`、`lib/client.js`、`research/disease-primer.json`、`test/workbench-service.test.mjs`、API/UI parity文档；M5实现提交号将在紧随其后的证据补录提交中核对。
+- **验证命令及关键输出原文**：`npm run check` 退出码 `0`；原文含 `✓ 资料目录闸门通过`、`✓ 患者档案闸门通过`、`✓ 随包文件占位符 = 0（扫描 18 个文件 / 5 条模式）`、`✓ 患者可见文案红线：扫描 3 个文件，8 条禁词规则，0 命中`。`npm test` 退出码 `0`；`# tests 6`、`# pass 6`、`# fail 0`。`node --check dsh/index.js`、`node --check dsh/workbench.js`、`node --check lib/client.js`均退出码0。
+- **实测内容**：服务测试覆盖未配置目录仍可用急症模块、选择目录迁移到schema v2并seed两套合成档案、新建档案和急症/问题记录、根目录外文件拒绝、无值的exact时间拒绝；所有测试使用仓内合成fixture和测试生成文件。
+- **未验证项及原因**：目标Desktop未检测到/未安装验证；`uiWorkspace.pickDirectory`、Desktop内置Node `node:sqlite`、会话 `newSession`/`subscribe` 真机运行、目录权限真实环境、`tel:120` 点击拨号均未验证。临床内容仍未由临床专业人员审核。测试桩和静态检查不替代实机交互。

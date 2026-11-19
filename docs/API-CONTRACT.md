@@ -1,24 +1,27 @@
 # API 合同
 
-状态：M3候选读写合同，数据schema v1已冻结；实际业务端点由M5实现并实测。
+状态：M5实现；schema v2。路由源于 `dsh/index.js`，存储实现见 `dsh/workbench.js`。
 
 API 前缀：/api/<项目唯一slug>；鉴权由宿主 connection 合同处理，不因 loopback 就跳过。
 
 | 方法/路径 | 意图 | 输入字段/类型/约束 | 成功响应 | 错误码 | 读写实体 | 幂等/事务 |
 | --- | --- | --- | --- | --- | --- | --- |
 | GET /health | 版本与能力 | 无 | version/apiVersion/capabilities | capability_unavailable | 无 | 只读 |
-| GET /bootstrap | 工作台初始读模型 | profile可选；禁止跨档案 | schemaVersion、subjects、activeSubject、目录/参考包状态 | 400/503 | subject/source/document/question | 只读快照 |
-| POST /subjects | 新建本人/照护对象档案 | displayLabel、subjectRole、requestId | subject、revision | 400/409/503 | subjects/source_records | requestId幂等；单事务 |
-| POST /acute-events | 建立疑似事件 | subjectId、reporterRole、timepoints、observations、source；字段均可未知/跳过 | event与交接摘要草稿 | 400/404/409/503 | acute_events、event_timepoints、symptom_observations、source_records | requestId幂等；事务 |
-| POST /documents | 登记用户资料 | subjectId、displayLabel、documentKind、user-chosen relativePath、date/source | document索引记录 | 400/404/409/503 | clinical_documents、source_records | 不接收任意绝对路径；事务 |
-| POST /questions | 新建/修订复诊问题 | subjectId、questionText、source、expectedRevision、requestId | question + revision | 400/404/409/503 | care_questions、source_records | 乐观并发；事务 |
-| PATCH /settings/data-directory | 记录已确认的资料目录状态 | picker结果/状态；取消不写 | state，不回显完整敏感路径 | 400/503 | workbench_settings | 用户取消零副作用 |
+| GET /primer | 疾病概要四段 | 无 | 与已签认primer-data一致的JSON | 500 | 无 | 只读 |
+| GET /bootstrap?subjectId= | 工作台读模型 | subjectId可选 | schemaVersion、目录状态、subject清单与选中档案的资料/问题/急症摘要 | 503/409 | subjects/source/document/question/event | 只读快照 |
+| GET /root | 目录状态 | 无 | 未选择或完整本机目录路径 | 503 | 无 | 只读；完整路径仅本机UI显示 |
+| POST /root | 设置资料目录 | 用户选择的dir；拒绝主目录、桌面、下载根、tmp | ready目录状态 | 400/403/500 | 本地配置指针、SQLite | 先验证可写与迁移，取消不请求 |
+| GET /files | 目录内候选文件 | 无；仅已选择目录 | 最多500项、最大深度3、白名单扩展名 | 409/500 | 无 | 不跟随符号链接 |
+| POST /subjects | 新建本人/照护对象档案 | displayLabel、subjectRole | subject及更新读模型 | 400/409/500 | subjects | 单条写入 |
+| POST /acute-events | 建立疑似事件 | subjectId、reporterRole、timepoints、observations；时间可unknown | event及更新读模型 | 400/404/409/500 | acute_events、event_timepoints、symptom_observations、source_records | SQLite事务 |
+| POST /documents | 登记用户资料 | subjectId、relativePath、可选名称/类别/日期/隐私 | document索引记录 | 400/404/409/500 | clinical_documents、source_records | 目录边界、类型、50MB限制；不接收绝对路径 |
+| POST /questions | 新建问题草稿 | subjectId、questionText、isPrivate | question及更新读模型 | 400/404/409/500 | care_questions、source_records | SQLite事务 |
 
-通用字段：subject/project ID、occurredAt 的时区、单位、revision、来源 ref、reviewState、request ID。列出空记录、非法输入、主体不存在、取消、并发覆盖、服务不可用的实际响应。
+状态码以当前代码中的HTTP状态与错误JSON为准；错误响应不回传原始用户文件内容。HTTP端点使用宿主`connection.requestRejection`。客户端会话通过`desktopWorkbenches.newSession`及`subscribe`，只填草稿不自动发送。
 
-读模型样例和写命令样例各一份。前端未知字段如何兼容？修改何时使快照过期？本地与外部能力错误如何区分？
+实现边界：未实现并发revision更新；急症/问题采用追加记录。客户端刷新read model以获得最新状态。数据目录的绝对路径保存在本机UI状态与用户选目录指针中，不上传。Desktop真实接口运行尚未验证。
 
 
 ## API边界
 
-业务写入限于已确认档案、来源、急症交接、资料索引和自拟问题。错误响应不得包含绝对资料目录或患者原文。未知字段在读模型中显式返回`unknown`/`null`，未确认内容不转成已核实事实。`/api/.../health`沿用模板；所有路径继续使用本项目slug和宿主`connection.requestRejection`鉴权。会话操作不伪造自建接口：M5仅在当前Desktop公开服务能力可验证时调用`newSession`和`subscribe`，否则显示宿主能力不可用且保留本地功能。此为M3合同草案，端点尚未实现。
+业务写入限于已选档案、来源、急症交接、资料索引和自拟问题。记录均标明自述/未核实；没有文件正文解析或患者试验匹配。服务端使用配置目录保存数据根指针；尚未实测目标Desktop数据路径与runtime兼容性。

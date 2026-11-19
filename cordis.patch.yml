@@ -1,3 +1,5 @@
 - insert:
     - id: cerebral-infarction-workbench-main
       name: "@xyb-openharness-dsh-plugins/cerebral-infarction-workbench"
+      config:
+        root: !!js dshHomePath('cerebral-infarction')
