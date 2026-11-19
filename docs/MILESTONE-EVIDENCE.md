@@ -71,3 +71,13 @@
 - **验证命令及关键输出原文**：`npm run check` 退出码 `0`；原文含 `✓ 资料目录闸门通过`、`✓ 患者档案闸门通过`、`✓ 随包文件占位符 = 0（扫描 18 个文件 / 5 条模式）`、`✓ 患者可见文案红线：扫描 3 个文件，8 条禁词规则，0 命中`。`npm test` 退出码 `0`；`# tests 6`、`# pass 6`、`# fail 0`。`node --check dsh/index.js`、`node --check dsh/workbench.js`、`node --check lib/client.js`均退出码0。
 - **实测内容**：服务测试覆盖未配置目录仍可用急症模块、选择目录迁移到schema v2并seed两套合成档案、新建档案和急症/问题记录、根目录外文件拒绝、无值的exact时间拒绝；所有测试使用仓内合成fixture和测试生成文件。
 - **未验证项及原因**：目标Desktop未检测到/未安装验证；`uiWorkspace.pickDirectory`、Desktop内置Node `node:sqlite`、会话 `newSession`/`subscribe` 真机运行、目录权限真实环境、`tel:120` 点击拨号均未验证。临床内容仍未由临床专业人员审核。测试桩和静态检查不替代实机交互。
+
+### M6 构建、打包与profile验证（2026-11-19）
+
+- **未验证项/限制**：tarball生成≠安装。DSH Desktop目标profile安装、退出重开、页面打开、业务点击、目录picker、宿主会话仍未验证。当前包版本仍为0.1.0，目标0.2.0在M9。
+- **交付物**：`src/client.js`、`src/workbench-index.html`、`public/index.html`、`lib/client.js`、`lib/layout.js`、`VERSION`、`lib/version.js`、`scripts/build-public.mjs`、修订后的`scripts/build-client.mjs`与`package.json`、`docs/DIFF-MATRIX.md`、`docs/DEV-PLAN.md`、`docs/DEV-REQUIREMENTS-2026-11-19.md`；提交号将在后续证据补录提交中核对。生成物在仓内，tarball不入仓。 M2确认原型文件未改。
+- **验证命令及关键输出原文**：`npm run build`退出码0，输出`✓ 已生成 lib/version.js（v0.1.0 · stable · 73bb7b3）`、`✓ public/index.html（v0.1.0）`及`✓ lib/client.js（495 行 · 0.1.0）`；`node --check lib/client.js`退出码0。`npm run check`退出码0，末段原文`✓ 随包文件占位符 = 0（扫描 21 个文件 / 5 条模式）`、`✓ 患者可见文案红线：扫描 6 个文件，8 条禁词规则，0 命中`；测试汇总`# tests 6`、`# pass 6`、`# fail 0`。`npm run audit`退出码0，原文`40/40 通过 · 0 失败 · 0 待人工`。`npm pack --pack-destination /tmp`打包退出码0，最终包名、文件数与SHA将在实现提交后重打包并随证据补录登记。
+- **profile检查实测**：`node scripts/check-install.mjs`退出码非0；原文`✗ 这台机器上没有找到 DSH Desktop（io.dsh.desktop）。`，脚本明确给出DSH Desktop下载地址。本机无目标app，未执行profile安装。
+- **审计修复说明**：修复构建器的包名JSON转义，并让检查器接受本项目四段primer语义ID（原M2原型未改）；业务页通过实际随包`public/index.html`、本地API与宿主iframe加载，不是空入口。
+- **未验证项/限制**：tarball生成≠安装。DSH Desktop目标profile安装、退出重开、桌面页面打开、宿主目录picker、DSH会话仍未验证。当前包版本仍为0.1.0，目标0.2.0在M9。
+- **未验证项/限制**：tarball生成≠安装。DSH Desktop目标profile安装、退出重开、页面打开、业务点击、目录picker、宿主会话仍未验证。当前包版本仍为0.1.0，目标0.2.0在M9。

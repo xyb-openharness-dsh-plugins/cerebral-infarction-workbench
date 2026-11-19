@@ -8,10 +8,15 @@ export const Config = Schema.object({ root: Schema.string().required() })
 const manifest = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'))
 const PREFIX = '/api/cerebral-infarction-workbench'
 const PRIMER = JSON.parse(readFileSync(new URL('../research/disease-primer.json', import.meta.url), 'utf8'))
+const UI_HTML = readFileSync(new URL('../public/index.html', import.meta.url), 'utf8')
 
 function sendJson(res, status, body) {
   res.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' })
   res.end(JSON.stringify(body))
+}
+function sendHtml(res, status, html) {
+  res.writeHead(status, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', 'x-content-type-options': 'nosniff' })
+  res.end(html)
 }
 
 function readJson(req, limit = 64 * 1024) {
@@ -52,6 +57,7 @@ export function apply(ctx, config = {}) {
   }
   const definitions = [
     [`${PREFIX}/health`, 'GET', async (_req, res) => sendJson(res, 200, { ok: true, version: manifest.version, apiVersion: 'v1', capabilities: ['health', 'bootstrap', 'directory', 'subjects', 'acute-events', 'documents', 'questions'] })],
+    [`${PREFIX}/ui/`, 'GET', async (_req, res) => sendHtml(res, 200, UI_HTML)],
     [`${PREFIX}/primer`, 'GET', async (_req, res) => sendJson(res, 200, PRIMER)],
     [`${PREFIX}/bootstrap`, 'GET', async (req, res) => {
       const url = new URL(req.url, 'http://localhost')

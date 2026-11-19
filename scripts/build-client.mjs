@@ -18,7 +18,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PANEL, AGENT_PANE } from '../lib/layout.js';
+import { PANEL, AGENT_PANE, UI_ENTRY } from '../lib/layout.js';
 import { version } from '../lib/version.js';
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
@@ -40,14 +40,15 @@ const banner = `/* 由 scripts/build-client.mjs 从 src/client.js 生成，勿�
  *   装进 Desktop 会以别人的 id 注册。LESSONS L89。） */
 const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
 const out = `${banner}window.__ModuleLoader__.load({
-  id: ${pkg.name},
+  id: ${JSON.stringify(pkg.name)},
   factory(require) {
     const React = require('react')
     /* 注入点：与 lib/layout.js 同源，客户端不许另写一份 0.65 */
-    const __PANEL_LAYOUT__ = ${JSON.stringify(PANEL)}
+    const PANEL_LAYOUT = ${JSON.stringify(PANEL)}
     /* 会话面板参数（默认/最小/最大/步进）同源于 lib/layout.js */
-    const __AGENT_PANE__ = ${JSON.stringify(AGENT_PANE)}
-    const __VERSION__ = ${JSON.stringify(version)}
+    const AGENT_PANE = ${JSON.stringify(AGENT_PANE)}
+    const UI_ENTRY = ${JSON.stringify(UI_ENTRY)}
+    const BUILD_VERSION = ${JSON.stringify(version)}
 
 ${body.split('\n').map((line) => (line.trim() === '' ? '' : '    ' + line)).join('\n')}
 

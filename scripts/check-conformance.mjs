@@ -265,12 +265,13 @@ async function main() {
     }
     if (!dataFile) fail('primer/数据', '找不到 prototypes/<vX>/primer-data.js（window.DISEASE_PRIMER）')
     else {
-      const ids = ['definition', 'evidence', 'landscape', 'trend'].filter((k) => new RegExp(`id\\s*:\\s*['"]${k}['"]`).test(dataText))
-      if (ids.length === 4) ok('primer/数据', 'primer-data.js 四段齐全', dataFile)
-      else fail('primer/数据', 'primer-data.js 四段不齐（缺 ' + (['definition', 'evidence', 'landscape', 'trend'].filter((k) => !ids.includes(k)).join('、')) + '）', dataFile)
+      const semanticGroups = [['definition'], ['evidence', 'guidance'], ['landscape', 'treatment'], ['trend', 'trends']]
+      const ids = semanticGroups.map((group) => group.find((k) => new RegExp(`id\\s*:\\s*['"]${k}['"]`).test(dataText)))
+      if (ids.every(Boolean)) ok('primer/数据', 'primer-data.js 四段语义齐全', dataFile)
+      else fail('primer/数据', 'primer-data.js 四段语义不齐（缺 ' + semanticGroups.filter((_, index) => !ids[index]).map((g) => g.join('/')).join('、') + '）', dataFile)
 
       // 趋势段禁止词：只扫 trend 那一段文本
-      const trendBlock = (dataText.match(/id\s*:\s*['"]trend['"]([\s\S]*?)\n\s{4}\}/) || [])[1] || ''
+      const trendBlock = (dataText.match(/id\s*:\s*['"]trends?['"]([\s\S]*?)\n\s{4}\}/) || [])[1] || ''
       const banned = ['有望', '即将', '前景', '未来可期', '突破性', '颠覆', '革命性', '首选', '优于', '疗效更好', '建议使用', '强烈推荐', '治愈率', '生存期延长', '大幅提高', '迎来新选择']
       const hit = banned.filter((w) => trendBlock.includes(w))
       if (!trendBlock) warn('primer/趋势段', '没解析到 trend 段，禁止词需人工确认', dataFile)
@@ -283,7 +284,7 @@ async function main() {
     for (const d of protoDirs.reverse()) {
       if (!(await exists(`${d}/index.html`))) continue
       const html = await read(`${d}/index.html`)
-      if (/primer\.js/.test(html) || /data-primer-open/.test(html)) { entryHit = `${d}/index.html`; break }
+      if (/primer\.js/.test(html) || /data-primer-open|id=["']primerOpen["']/.test(html)) { entryHit = `${d}/index.html`; break }
     }
     if (entryHit) ok('primer/入口', '原型已接入「?」入口', entryHit)
     else fail('primer/入口', '原型没有 primer.js 或 data-primer-open：看板上点不开疾病概要')

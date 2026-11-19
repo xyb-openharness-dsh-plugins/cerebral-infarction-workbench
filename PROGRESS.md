@@ -58,3 +58,12 @@
 - 未验证：Desktop宿主目录选择器与真实数据目录、DSH会话创建订阅/重开、手机 `tel:120` 行为、临床专业审核；静态检查和本地Node并非Desktop实机证明。
 - 下一步：M6构建/打包与可行范围内的目标profile检查；安装目标未检测到，Desktop装机和UI验收明确未验证。
 - 阻塞：本地代码流程无外部阻塞；Desktop宿主与实机验证属于环境未验证，不宣称通过。临床审核待有资质审核者核验，作为待人工决定类项保留。
+
+## M6 收口记录（2026-11-19）
+
+- 已完成本地部分：修复构建链，不再调用错误的天疱疮 public 页面迁移器；新增 `src/client.js` → `lib/client.js` 构建源、集中布局/会话宽度参数、版本派生；tarball 已实际生成到 `/tmp` 并记录哈希。
+- 验证：`npm run build` 退出码0；`npm run build:client -- --check` 和 `npm run build:version -- --check` 均通过；`npm pack --pack-destination /tmp` 退出码0，31个文件、3.0MB压缩包，SHA-256见M6证据。
+- Desktop profile安装验证：`node scripts/check-install.mjs` 实测“这台机器上没有找到 DSH Desktop（io.dsh.desktop）”；不安装到其他profile，不把打包当装机通过。
+- 尚存审计差异：`npm run audit` 实测31/39通过、7失败、1待人工，详见M6证据；当前不宣称M9完成。
+- 下一步：按审计判据继续补齐随包UI和primer结构一致性等缺口，然后M7/M8草稿与M9收口。
+- 阻塞分类：M6本机打包部分完成；Desktop真实profile安装属于人工/环境依赖类，具体待DSH Desktop安装并启动后验证。其余审计差异是纯未完成，继续自动修复。
