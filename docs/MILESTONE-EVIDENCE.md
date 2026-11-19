@@ -15,7 +15,7 @@
 | M6 |  |  |  |  |
 | M7 |  |  |  |  |
 | M8 |  |  |  |  |
-| M9 |  |  |  |  |
+| M9 | `VERSION`/`package.json`/lock一致的0.2.0；`docs/TEST-CASES.md`两场景；`docs/evidence/m9-*.png`；`prototypes/v0.3/`审计兼容生产镜像（非新签认）；M9实现提交 `87b5fbf` | `npm run build`（0）；`npm run check`（0）；`npm test`（0）；`npm run audit`（0）；`dsh-wb-cli audit /data/home/dev/cerebral-infarction-workbench`（0）；`node scripts/check-agent-pane-contract.mjs .`（0）；`npm pack --dry-run`与`npm pack --pack-destination /tmp`（0）；`node scripts/check-install.mjs`（1）；`node scripts/check-primer-links.mjs`及`--self-test`（0） | check/test：`# tests 8`、`# pass 8`、`# fail 0`；本地/starter audit各`40/40 通过 · 0 失败 · 0 待人工`；pane JSON `"pass": true`、`"fails": []`；包`total files: 32`、`package size: 3.0 MB`、`unpacked size: 3.5 MB`、shasum `684e8a1feea67d5ba187346c9993b2fcfe854369`、SHA-256 `3ca5f8e1069e2d7f452b30ec66b895fa8f745c0b203d408600cfb0b94adec91c`；primer静态`21 通过，0 失败`，反向自测`12条，12通过`；`check-install`原文`✗ 这台机器上没有找到 DSH Desktop（io.dsh.desktop）。`；浏览器场景输出与截图哈希见下方 | 两个场景均一致（逐项见`docs/TEST-CASES.md`）。仅本地HTTP/Chromium与合成数据；目录选择由API/同源消息模拟。DSH Desktop profile、退出重开、真实picker/newSession/subscribe交互、真实系统拨号未验证；医学内容无临床专业审核；G1待晨审追认，品牌待用户追认。未发布/未打tag/未改BACKLOG。 |
 
 ## 证据自检（收口前逐条勾）
 
@@ -93,3 +93,12 @@
 - **核对**：草稿明确名称待用户追认、分类/英文名/许可证待核、M2原型截图不是最终可安装版截图且不可冒充；未访问/提交市场仓库、未修改BACKLOG。
 - **未验证项**：投稿时的最新市场规范、安装来源、支持平台、截图与许可均待授权后核验；当前不投稿。
 - **未验证项/限制**：tarball生成≠安装。DSH Desktop目标profile安装、退出重开、页面打开、业务点击、目录picker、宿主会话仍未验证。当前包版本仍为0.1.0，目标0.2.0在M9。
+
+
+### M9详情（2026-11-19）
+
+- **浏览器实测**：本地Chromium打开生产`public/index.html`，标题`脑梗死工作台 · v0.2.0`。场景1输出摘要标记`本人/照护者提供，未经核实`、最后正常/发现时间`未知/未填写`、症状`突然口齿不清（合成测试）`、病史`未知`。场景2输出`eventAssertion=caregiver_reported`、`documentCount=2`（一条seed加一条新增）、`privateQuestionCount=1`、`rootConfigured=true`。测试均用合成资料；没有点击电话链接。用例细节见`docs/TEST-CASES.md`。
+- **截图SHA-256**：`m9-local-home.png` `049935d7ffe234ece99787e5f00f4464e0acf30afc200f71e3de4621bf8cbd89`；`m9-handoff.png` `0b77ec4cb608a040089cbb22d91e371a935c7c56392a0ebd23f846ca7261889b`；`m9-records.png` `9ee6ee2229e229983729b9b54a8d5feddb4a1d5b9f22569b153906e09c391ed0`。M2签认HTML没有改动；M9 `prototypes/v0.3/index.html` SHA-256 `d340fd9883ece2edd8362f0f869f146edb2b7ac06cc081c581b68c4ed1982b06`，`primer-data.js` SHA-256 `d9de877b305de2b90467353dd145f25c1508d2beabaeca98e51b47c8af867364`。该目录仅用于兼容starter audit读取生产镜像，不是用户签认原型。
+- **验证细节**：`npm run build`输出`✓ 已生成 lib/version.js（v0.2.0 · stable · 997f98f）`、`✓ public/index.html（v0.2.0）`、`✓ lib/client.js（495 行 · 0.2.0）`。`npm run check`退出码0，运行八项测试、schema/research/目录/患者创建/文案等断言，末端输出`✓ 随包文件占位符 = 0（扫描 21 个文件 / 5 条模式）`及`✓ 患者可见文案红线：扫描 8 个文件，8 条禁词规则，0 命中`。`npm test`退出码0，8/8通过。`npm run audit`与starter CLI `dsh-wb-cli audit ...`均退出码0，`40/40 通过 · 0 失败 · 0 待人工`。面板契约退出码0，JSON中`pass=true`、`fails=[]`，且确认`newSession(workspaceId)`、订阅重渲染、草稿桥等静态条件。`npm pack --dry-run`和实际pack退出码0，32个文件；tarball未入仓，位于`/tmp/xyb-openharness-dsh-plugins-cerebral-infarction-workbench-0.2.0.tgz`。
+- **收口差异处理**：初次全链检查暴露`check-primer-links.mjs`未检查本病种概要实际使用的`paragraphs`，因此误报L13。补充paragraphs/facts检查后，正向检查`21通过，0失败`；`--self-test`反向对照`12条，12通过`。治疗概要补入固定“不代表任何一项适合你”与“需要问你的医生”出口；未更改M2签认HTML或冻结schema。
+- **未验证原因**：`node scripts/check-install.mjs`退出码1，机器实测没有DSH Desktop（`io.dsh.desktop`），因此profile安装、退出重开、桌面入口点击和真实目录选择器/Agent会话未做；Chromium用本地宿主stub和同源消息进行场景实测，不代表DSH Desktop。临床审核没有具备资质的审核者，电话系统链接没有实际拨号。
