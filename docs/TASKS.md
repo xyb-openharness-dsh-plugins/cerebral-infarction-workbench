@@ -8,7 +8,7 @@
 | T02 | 公开临床/研究数据 | M3 | `research/`、参考数据模块 | 公开指南/登记记录；来源、日期、查询和快照；无患者级匹配 | `docs/CLINICAL-DATA.md`、公开查询快照331条、双合成档案fixture；M4证据见`docs/MILESTONE-EVIDENCE.md` | 已完成 |
 | T03 | 服务/API与UI parity | M3、原型确认 | `dsh/`、`lib/`、`research/disease-primer.json`、migration/API | 急症优先、可选交接、双档案、本机索引、设置与primer；原生会话创建/订阅只由宿主接管 | `docs/API-CONTRACT.md`、`docs/UI-PARITY.md`、M5证据 | 本地代码完成；Desktop未验证 |
 | T04 | 包与测试画像 | M4/M5 | `test/`、`docs/`、tarball | 合成资料；安装包检查；仅目标Desktop环境可核验的项如实标未验证 | `docs/MILESTONE-EVIDENCE.md` M6 | 本地build/pack完成；profile未验证 |
-| T05 | 交付草稿 | M5/M6 | `docs/RELEASE.md`、市场草稿 | M7/M8仅准备，不发布、不打tag、不投稿 | M7/M8证据待生成 | 待开始 |
+| T05 | 交付草稿 | M5/M6 | `docs/release-draft/` | M7/M8仅准备，不发布、不打tag、不投稿 | `docs/MILESTONE-EVIDENCE.md` M7；M8待做 | M7完成，M8待做 |
 | T06 | M9自检与报告 | 全部实现 | 文档、check/test/audit/pack | 2个以内端到端真实场景；五项门禁记录；`0.2.0`；无Release | M9证据待生成 | 待开始 |
 
 ## 用户确认与限制

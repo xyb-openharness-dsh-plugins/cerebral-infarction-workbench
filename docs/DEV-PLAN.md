@@ -9,7 +9,7 @@
 | M4 | 公开登记与合成测试资料 | 完成；M4证据 |
 | M5 | 服务/API与已签认页面 | 完成本地代码；M5证据，Desktop未验证 |
 | M6 | build、包清单、tarball与可行profile验证 | build/pack已验证；Desktop未安装，profile未验证 |
-| M7 | 发布说明草稿 | 待做；只备草稿 |
+| M7 | 发布说明草稿 | 完成；`docs/release-draft/M7-RELEASE-NOTES.md`，未发布 |
 | M8 | 市场材料草稿 | 待做；只备草稿，不投稿 |
 | M9 | 五项门禁、最多2项真实场景测试、版本0.2.0和报告 | 待做；当前audit有失败，未收口 |
 

@@ -80,4 +80,10 @@
 - **profile检查实测**：`node scripts/check-install.mjs`退出码非0；原文`✗ 这台机器上没有找到 DSH Desktop（io.dsh.desktop）。`，脚本明确给出DSH Desktop下载地址。本机无目标app，未执行profile安装。
 - **审计修复说明**：修复构建器的包名JSON转义，并让检查器接受本项目四段primer语义ID（原M2原型未改）；业务页通过实际随包`public/index.html`、本地API与宿主iframe加载，不是空入口。
 - **未验证项/限制**：tarball生成≠安装。DSH Desktop目标profile安装、退出重开、桌面页面打开、宿主目录picker、DSH会话仍未验证。当前包版本仍为0.1.0，目标0.2.0在M9。
+
+### M7 发布说明草稿（2026-11-19）
+
+- **交付物**：`docs/release-draft/M7-RELEASE-NOTES.md`；M7草稿提交号将在M7证据补录中核对。替换了初始化遗留的其他疾病模板文案。
+- **检查**：人工对照本任务限制与当前证据状态，文档明确标记“草稿、不发布”，版本当前0.1.0/目标0.2.0，未写未验证为通过；没有创建tag、Release或npm发布。
+- **未验证项**：草稿中的预期交付功能需由M9证据决定最终措辞；Desktop实机、目标profile与临床审核仍未验证。
 - **未验证项/限制**：tarball生成≠安装。DSH Desktop目标profile安装、退出重开、页面打开、业务点击、目录picker、宿主会话仍未验证。当前包版本仍为0.1.0，目标0.2.0在M9。
