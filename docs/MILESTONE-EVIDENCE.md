@@ -67,7 +67,7 @@
 
 ### M5 服务层与面板契约（2026-11-19）
 
-- **交付物**：`dsh/index.js`、`dsh/workbench.js`、`lib/client.js`、`research/disease-primer.json`、`test/workbench-service.test.mjs`、API/UI parity文档；M5实现提交号将在紧随其后的证据补录提交中核对。
+- **交付物**：`dsh/index.js`、`dsh/workbench.js`、`lib/client.js`、`research/disease-primer.json`、`test/workbench-service.test.mjs`、API/UI parity文档；M5实现提交 `2db1337`（已推送）。
 - **验证命令及关键输出原文**：`npm run check` 退出码 `0`；原文含 `✓ 资料目录闸门通过`、`✓ 患者档案闸门通过`、`✓ 随包文件占位符 = 0（扫描 18 个文件 / 5 条模式）`、`✓ 患者可见文案红线：扫描 3 个文件，8 条禁词规则，0 命中`。`npm test` 退出码 `0`；`# tests 6`、`# pass 6`、`# fail 0`。`node --check dsh/index.js`、`node --check dsh/workbench.js`、`node --check lib/client.js`均退出码0。
 - **实测内容**：服务测试覆盖未配置目录仍可用急症模块、选择目录迁移到schema v2并seed两套合成档案、新建档案和急症/问题记录、根目录外文件拒绝、无值的exact时间拒绝；所有测试使用仓内合成fixture和测试生成文件。
 - **未验证项及原因**：目标Desktop未检测到/未安装验证；`uiWorkspace.pickDirectory`、Desktop内置Node `node:sqlite`、会话 `newSession`/`subscribe` 真机运行、目录权限真实环境、`tel:120` 点击拨号均未验证。临床内容仍未由临床专业人员审核。测试桩和静态检查不替代实机交互。
